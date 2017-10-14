@@ -1,5 +1,6 @@
 (ns arclight.handler
-  (:require [compojure.core :refer [GET POST defroutes]]
+  (:require [clojure.pprint :refer [pprint]]
+            [compojure.core :refer [GET POST defroutes]]
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
             [arclight.middleware :refer [wrap-middleware]]
@@ -35,21 +36,21 @@
      (include-js "/js/app.js")]))
 
 (def state (atom {:req "foo"
-                  :body "bar"}))
+                  :params "bar"}))
+
 (defn handle-login
   [request]
-  (swap! state assoc-in [:req] (:params request))
-  ;; (swap! state assoc-in [:body] (slurp (:body request)))  WHY NO WORKIE!
+  (swap! state assoc-in [:req] request)
+  (swap! state assoc-in [:params] (:params request))
   request)
 
-;; (:req @state)
+;; @state
 
 (defroutes routes
   (GET "/" [] (loading-page))
   (GET "/about" [] (loading-page))
   (GET "/test" [] (loading-page))
-  (GET "/t2" req (str "GET: " req))
-  ;; (POST "/login" req (str "POST: " (merge (slurp (:body req)) {:params {:foo "bar"}})))
+  (GET "/t2" [foo] (str "JETTY: " foo))
   (POST "/login" req (handle-login req))
   
   (resources "/")
