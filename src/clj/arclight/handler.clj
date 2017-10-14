@@ -7,7 +7,11 @@
             [config.core :refer [env]]
             [ring.util.response :refer [response]]
             [ring.util.anti-forgery :refer [anti-forgery-field]]
-            [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]))
+            [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
+            [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
+            [ring.middleware.format :refer [wrap-restful-format]]
+            [clojure.java.jdbc :as db]))
+
 
 (def nav-bar
   [:div#navbar])
@@ -56,4 +60,7 @@
   (resources "/")
   (not-found "404: The pa1ge you seek was not found!"))
 
-(def app (wrap-middleware #'routes))
+(def app (-> #'routes
+             (wrap-defaults site-defaults)
+             wrap-restful-format
+             wrap-middleware))

@@ -7,7 +7,5 @@
 
 (defn wrap-middleware [handler]
   (-> handler
-      (wrap-defaults site-defaults)
-      wrap-restful-format
       wrap-exceptions
       wrap-reload))
