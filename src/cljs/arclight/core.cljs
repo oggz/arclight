@@ -18,14 +18,24 @@
 ;; @app-state
 
 (defn post
-  []
-  (POST "/login" {:format :json
-                  :keywords? true
-                  :response-format :json
-                  :params {:user (:user @app-state)
-                           :pass (:pass @app-state)}
-                  :handler #(log "AJAX RESPONSE: " %)
-                  :error-handler #(log "ERROR: Handler: " (str %))}))
+  [path params handler]
+  (POST path {:format :json
+              :keywords? true
+              :response-format :json
+              :params params
+              :handler handler
+              :error-handler #(log "ERROR: AJAX Handler: " %)}))
+
+(defn ajax-get
+  ([path params]
+   (ajax-get path params #(log "Handler: "(str %))))
+
+  ([path params handler]
+   (GET path {:params params
+              :handler handler})))
+
+;; (post "/login"
+;;       {:user "foo" :pass "bar"})
 
 ;; (GET "/t2" {:params {:foo 3}
 ;;             :handler #(log "Handler: "(str %))})
@@ -42,17 +52,41 @@
    [:div
     [:p (repeat 5 lorem-ipsum)]]])
 
+(defn handle-login [response]
+  (if-let [token (:token response)]
+    (do
+      (swap! app-state assoc :token token)
+      (prn response))
+    (prn response)))
+
 (defn login-form []
-  (let [uname (:user @app-state)
+  (let [user (:user @app-state)
         pass (:pass @app-state)]
     [:ul
      [:li [:input {:type "text"
-                   :value uname
+                   :value user
                    :on-change #(swap! app-state assoc :user (.. % -target -value))}]]
      [:li [:input {:type "password"
                    :value pass
                    :on-change #(swap! app-state assoc :pass (.. % -target -value))}]]
-     [:button {:on-click post} "POST!"]]))
+     [:button {:on-click #(post "/login" {:user user :pass pass} handle-login)} "Log in!"]
+     [:button {:on-click #(ajax-get "/logout" {})} "Log out!"]
+     [:button {:on-click #(ajax-get "/t2" {:foo 3} (fn [{x :rand}] (swap! app-state assoc :counter x)))} "GET secured!"]]))
+
+(defn handle-register [response]
+  (prn response))
+
+(defn register-form []
+  (let [user (:user @app-state)
+        pass (:pass @app-state)]
+    [:ul
+     [:li [:input {:type "text"
+                   :value user
+                   :on-change #(swap! app-state assoc :user (.. % -target -value))}]]
+     [:li [:input {:type "password"
+                   :value pass
+                   :on-change #(swap! app-state assoc :pass (.. % -target -value))}]]
+     [:button {:on-click #(post "/register" {:user user :pass pass} handle-register)} "POST!"]]))
 
 (defn about-page []
   [:div
@@ -65,11 +99,23 @@
   [:div [:h2 "Test... " (:counter @app-state)]
    [:button {:on-click #(swap! app-state update-in [:counter] inc)} "Click Me!"]])
 
+(defn register-page []
+  [:div [:h2 "Register New User: "]
+   [register-form ]])
+
+(defn login-page []
+  [:div
+   [:h2 "Log in please: " (:counter @app-state)]
+   [login-form]
+   [:button {:on-click #(swap! app-state update-in [:counter] inc)} "Click Me!"]])
+
 (defn nav-bar []
   [:nav
    [:a {:href "/"} "Home"]
    [:a {:href "/about"} "About"]
-   [:a {:href "/test"} "Test"]])
+   [:a {:href "/test"} "Test"]
+   [:a {:href "/register"} "Register"]
+   [:a {:href "/login"} "Login"]])
 
 ;; -------------------------
 ;; Routes
@@ -87,6 +133,12 @@
 
 (secretary/defroute "/test" []
   (reset! page #'test-page))
+
+(secretary/defroute "/login" []
+  (reset! page #'login-page))
+
+(secretary/defroute "/register" []
+  (reset! page #'register-page))
 
 ;; -------------------------
 ;; Initialize app

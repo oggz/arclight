@@ -12,6 +12,8 @@
                  [ring/ring-defaults "0.3.1"]
                  [ring/ring-json "0.4.0"]
                  [ring-middleware-format "0.7.2"]
+                 [buddy/buddy-auth "2.1.0"]
+                 [buddy/buddy-hashers "1.3.0"]
                  [compojure "1.6.0"]
                  [hiccup "1.0.5"]
                  [cljs-ajax "0.7.2"]
