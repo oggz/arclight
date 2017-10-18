@@ -27,6 +27,17 @@ nav a {
     line-height: 50px;
 }
 
+img {
+    position: absolute;
+    pointer-events: none;
+}
+
+svg {
+    position: absolute;
+    top: 0;
+    pointer-events: none;
+}
+
 h1, h2, h3 {
     color: #000;
 }

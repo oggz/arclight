@@ -102,7 +102,7 @@
                 (catch Exception e
                   (prn "ERROR: "(.getMessage e)))))
       (status 401 (str "Error: " user " was NOT added to the database!"))
-      (status 401 (str user " was added to the database.")))))
+      (status 200 (str user " was added to the database.")))))
 
 (defn logout-user [req]
   (-> req
@@ -112,17 +112,7 @@
 (defn foo [req]
   (assoc req :body {:rand (rand-int 100)}))
 
-(defroutes routes
-  (GET "/" [] (loading-page))
-  (GET "/register" [] (loading-page))
-  (POST "/register" req (register-user req))
-  (GET "/login" [] (loading-page))
-  (POST "/login" req (handle-login req))
-  (GET "/logout" req (logout-user req))
-  (GET "/t2" [] (restrict foo))
-  (resources "/")
-  (not-found "404: The pa1ge you seek was not found!"))
-
+;; TODO: Blacklist of malicious user names.
 (defn restrict
   [handler]
   (fn [req]
@@ -132,6 +122,19 @@
       (if claims
         (-> req (assoc :id claims) handler (dissoc :id))
         (status 401 "Unauthorized!")))))
+
+(defroutes routes
+  (GET "/" [] (loading-page))
+  (GET "/about" [] (loading-page))
+  (GET "/test" [] (loading-page))
+  (GET "/register" [] (loading-page))
+  (POST "/register" req (register-user req))
+  (GET "/login" [] (loading-page))
+  (POST "/login" req (handle-login req))
+  (GET "/logout" req (logout-user req))
+  (GET "/t2" [] (restrict foo))
+  (resources "/")
+  (not-found "404: The pa1ge you seek was not found!"))
 
 (def app (-> #'routes
              (wrap-defaults site-defaults)

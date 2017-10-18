@@ -5,6 +5,10 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.clojure/core.async "0.3.443"]
+                 [org.clojure/clojurescript "1.9.908"
+                  :scope "provided"]
+                 [org.clojure/java.jdbc "0.7.3"]
                  [ring-server "0.4.0"]
                  [reagent "0.7.0"]
                  [reagent-utils "0.2.1"]
@@ -18,12 +22,9 @@
                  [hiccup "1.0.5"]
                  [cljs-ajax "0.7.2"]
                  [yogthos/config "0.9"]
-                 [org.clojure/clojurescript "1.9.908"
-                  :scope "provided"]
                  [secretary "1.2.3"]
                  [venantius/accountant "0.2.0"
                   :exclusions [org.clojure/tools.reader]]
-                 [org.clojure/java.jdbc "0.7.3"]
                  [org.postgresql/postgresql "42.1.4"]]
 
   :plugins [[lein-environ "1.0.2"]
