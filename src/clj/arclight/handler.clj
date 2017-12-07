@@ -53,6 +53,9 @@
 (def nav-bar
   [:div#navbar])
 
+(def footer
+  [:div#footer])
+
 (def mount-target
   [:div#app
       [:h3 "ClojureScript has not been compiled!"]
@@ -74,6 +77,7 @@
     [:body {:class "body-container" :background "../images/impeller.jpg"}
      nav-bar
      mount-target
+     footer
      (anti-forgery-field)
      (include-js "/js/app.js")]))
 
@@ -127,6 +131,7 @@
   (GET "/" [] (loading-page))
   (GET "/about" [] (loading-page))
   (GET "/test" [] (loading-page))
+  (GET "/calc" [] (loading-page))
   (GET "/register" [] (loading-page))
   (POST "/register" req (register-user req))
   (GET "/login" [] (loading-page))

@@ -21,6 +21,7 @@
                  [compojure "1.6.0"]
                  [hiccup "1.0.5"]
                  [cljs-ajax "0.7.2"]
+                 [cljsjs/highcharts "5.0.14-0"]
                  [yogthos/config "0.9"]
                  [secretary "1.2.3"]
                  [venantius/accountant "0.2.0"
