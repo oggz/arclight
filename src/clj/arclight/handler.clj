@@ -74,7 +74,7 @@
 (defn loading-page []
   (html5
     (head)
-    [:body {:class "body-container" :background "../images/impeller.jpg"}
+    [:body {:class "body-container" :background "../images/superstructure.png"}
      nav-bar
      mount-target
      footer
@@ -127,10 +127,17 @@
         (-> req (assoc :id claims) handler (dissoc :id))
         (status 401 "Unauthorized!")))))
 
+(defn send-project-data [req]
+  (let [file (get-in req [:params :file])]
+    (if (re-matches #".*cljs" file)
+      (assoc req :body (read-string (slurp (str "resources/public/" file))))
+      (assoc req :body (slurp (str "resources/public/" file))))))
+
 (defroutes routes
   (GET "/" [] (loading-page))
   (GET "/about" [] (loading-page))
-  (GET "/test" [] (loading-page))
+  (GET "/projects" [] (loading-page))
+  (GET "/project-data" req (send-project-data req))
   (GET "/calc" [] (loading-page))
   (GET "/register" [] (loading-page))
   (POST "/register" req (register-user req))

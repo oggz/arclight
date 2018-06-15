@@ -4,6 +4,8 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
+  :jvm-opts ["-XX:MaxPermSize=128M"]
+
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/core.async "0.3.443"]
                  [org.clojure/clojurescript "1.9.908"
@@ -87,8 +89,7 @@
    :nrepl-port 7002
    :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"
                       "cider.nrepl/cider-middleware"
-                      "refactor-nrepl.middleware/wrap-refactor"
-                      ]
+                      "refactor-nrepl.middleware/wrap-refactor"]
    :css-dirs ["resources/public/css"]
    :ring-handler arclight.handler/app}
 
@@ -104,17 +105,15 @@
                                   [figwheel-sidecar "0.5.13"]
                                   [org.clojure/tools.nrepl "0.2.13"]
                                   [com.cemerick/piggieback "0.2.2"]
-                                  [pjstadig/humane-test-output "0.8.2"]
-                                  ]
+                                  [pjstadig/humane-test-output "0.8.2"]]
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.13"]
-                             ;; [cider/cider-nrepl "0.10.0-SNAPSHOT"]
+                             [cider/cider-nrepl "0.14.0"]
                              [org.clojure/tools.namespace "0.3.0-alpha2"
                               :exclusions [org.clojure/tools.reader]]
-                             [refactor-nrepl "2.0.0-SNAPSHOT"
-                              :exclusions [org.clojure/clojure]]
-                             ]
+                             [refactor-nrepl "2.3.1"
+                              :exclusions [org.clojure/clojure]]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]

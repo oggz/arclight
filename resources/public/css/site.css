@@ -16,9 +16,12 @@
 .inline {
     display: inline-block;
     margin: 10px;
+    vertical-align: top;
+}
+
+.half {
     width: 40%;
     min-width: 350px;
-    vertical-align: top;
 }
 
 button {
@@ -35,7 +38,7 @@ button:hover {
 .wide {
     background-color: rgba(0,0,0,0.75);
     margin-top: 10px;
-    width: 100%;
+    width: 25em;
     height: 32px;
     color: white;
     border: 2px solid white;
@@ -52,11 +55,12 @@ button:hover {
 
 .alpha {
     background-color: rgba(0, 0, 0, 0.75);
-    margin: 20px;
+    margin: 30px auto;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     min-width: 500px;
+    max-width: 75%
 }
 
 .parent {
@@ -128,7 +132,7 @@ legend {
 }
 
 img {
-    position: absolute;
+
     pointer-events: none;
 }
 
@@ -140,6 +144,11 @@ svg {
 
 .centered {
     margin: auto;
+}
+
+p {
+    margin: auto;
+    max-width: 75%;
 }
 
 h1, h2, h3 {

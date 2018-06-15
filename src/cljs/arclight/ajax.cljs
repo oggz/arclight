@@ -21,6 +21,7 @@
                                                     "__anti-forgery-token"))} %)))
     request))
 
+
 ;; @ajax/default-interceptors
 ;; (reset! ajax/default-interceptors [])
 (defn load-interceptors! []
