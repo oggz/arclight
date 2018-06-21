@@ -21,6 +21,10 @@
 (def log (.-log js/console))
 (def err (.-error js/console))
 
+
+;; -------------------------
+;; State
+
 (defonce app-state (atom {:user "foobar"
                           :pass "groove"
                           :logged false
@@ -29,18 +33,6 @@
                           :n 0
                           :project "default.cljs"
                           :project-height 200}))
-
-
-
-;; Is this OK to do?
-;; What about this?
-;; (defonce go-increment (go-loop []
-;;                         (<! (timeout 66))
-;;                         (swap! app-state update :n inc)
-;;                         (recur)))
-
-;; (GET "/phase1.html" {:handler #(swap! app-state assoc :project (str %))})
-;; (GET "/phase1.html" {:handler #(log (str %))})
 
 
 ;; -------------------------

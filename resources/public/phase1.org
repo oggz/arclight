@@ -1,0 +1,161 @@
+#+TITLE: 3-Axis CNC - Phase 1
+#+AUTHOR: Alexander A. Doccolo
+#+STARTUP: content
+#+OPTIONS: toc:nil H:3 num:0
+#+OPTIONS: tex:dvipng
+#+OPTIONS: html-postamble:nil
+#+PROPERTY: EXPORT_FILE_NAME foo
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [12pt, letterpaper]
+#+LATEX_HEADER: \usepackage[top=0.5in,bottom=1in]{geometry}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{setspace}
+#+LATEX_HEADER: \usepackage{adjmulticol}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{bicaption}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+HTML_HEAD_EXTRA: <style> pre.src {overflow:auto;} </style>
+#+HTML_HEAD_EXTRA: <style> body {color:white;} </style>
+#+HTML_HEAD_EXTRA: <style> img {max-width:80%; border-radius:5px;} </style>
+
+
+* Abstract
+
+  Phase 1 of the project consisted of the design, engineering, and construction of the mechanical components for the machine. A CAD model was designed and engineered from scratch and realized in physical form. Phase 1 is now at a temporary completion stage and will resume after the electronic components are installed. Below is an outline of the technical aspects of the design and build process.
+
+  #+NAME: cad_base
+  #+CAPTION: CAD Side Plate
+  #+ATTR_LATEX: :width 3cm :float t
+  #+ATTR_HTML: :width 500px
+  [[./phase1_images/2016-08-23_21:58.png]]
+  
+* Base
+  A-36 Hot Rolled Steel(HRS) was chosen as the material for the base and structural components. It was chosen over aluminum and other materials because of its rigidity. Forces applied to the cutting bit will be transferred to the structure. Any elastic deformation will cause inaccuracies in the cutting bits actual position relative to it virtual position. Steel elastically deforms much less than aluminum and most other materials which minimizes the inaccuracies. The squareness of the base is critical to the same end. Wedge shims were used to achieve squareness for welding.
+  
+  #+NAME: cad_base
+  #+CAPTION: Base Shimming
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0577.jpg]]
+  
+  Welding was chosen as the best joining process for the rigid body components as it greatly increases rigidity. Gas Tungsten Arc Welding(GTAW) or Tungsten Inert Gas(TIG) was chosen as the welding process due to the ability to control heat input thus reducing thermal deformation. Metal will contract following thermal input from welding thus slightly deforming the part. Techniques to reduce thermal deformation by distributing the thermal input from welding were also utilized. 
+
+  #+BEGIN_LaTeX
+    \begin{figure}[!tbp]
+      \centering
+      \begin{minipage}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{/home/oggz/documents/school/fall-2016/cs299/phase1_images/KIMG0576.jpg}
+        \caption{Base Tack Welds}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{/home/oggz/documents/school/fall-2016/cs299/phase1_images/KIMG0577.jpg}
+        \caption{Base Re-Squared}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{/home/oggz/documents/school/fall-2016/cs299/phase1_images/KIMG0578.jpg}
+        \caption{Base Full Welds}
+      \end{minipage}
+      \newpage
+      \includegraphics[width=10cm]{/home/oggz/documents/school/fall-2016/cs299/phase1_images/KIMG0580.jpg}
+      \caption{Base Complete}
+    \end{figure}
+  #+END_LaTeX
+  
+* Y-Axis Linear Motion
+  Linear motion components are expensive! For this reason it was necessary to compromise on these components. A design using 0.250" steel square stock rotated 45\deg on edge and 90\deg v-bearings was devised. This design features low friction and relatively high accuracy with relatively inexpensive components. High quality hardened v-bearings were chosen due to this being an extreme wear location. The rails will be flame hardened in place. 
+  
+  #+NAME: y_rails
+  #+CAPTION: Y Rails
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0597.jpg]]
+  
+  Positioning of the rails was critical in order to prevent the linear motion components from binding. If the upper rails are not nearly perfectly parallel, within ~0.010" over the 7' span, significant binding will occur preventing the function of the linear rails system. Also, if the upper and lower rails are not nearly perfectly plumb the same will occur. This accuracy was nearly achieved at 0.015". Some honing of the rails will be necessary for smoother motion; however, as is, the rails do not bind significantly.
+  
+  #+NAME: y_rails_layout
+  #+CAPTION: Y Rails Layout
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0597.jpg]]
+  
+* Gantry
+  The gantry consists of three main components. The two side plates and the cross beam. The side plates were made from 0.5" A-36 HRS plate and the cross beam from 2" x 4" x 0.125" A-36 HRS square tube with 0.5" plate flanges welded to the ends. It was chosen to join these components together with machine screws rather than fully welding them together to allow for slight final adjustment and ease of construction.
+  
+  #+NAME: gantry_side_plate
+  #+CAPTION: Gantry Side Plate
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0637.jpg]]
+  
+  The side plates were hand cut and thus provided a challenge for laying out the bolt hole patterns as there was no identical square edge shared by both plates. The hole patterns must be very close to identical, specifically the spacing between the threaded holes for the bearing and the cross beam through holes, for the gantry cross beam to remain square with the base. Bolt holes for the X axis stepper motor, pully, and clamps for the Y axis belts were laid out as well.
+  
+  #+NAME: eccentric_bearings
+  #+CAPTION: Eccentric Bearings
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0732.jpg]]
+  
+  Adjustment of the bearings vertical distance is also necessary as wear is inevitable and greater machine life is a critical engineering goal (contrary to evidence observed in most products produced today). To this end eccentric bushings were used to allow adjustment of the bearings over time.
+  
+  #+NAME: cad_base
+  #+CAPTION: CAD Model
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0639.jpg]]
+  
+  Stepper motor mount, pulley, and belt clamps were constructed and attached.
+  
+  #+NAME: cad_base
+  #+CAPTION: CAD Model
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0694.jpg]]
+  
+* X-Axis Linear motion
+  The X axis uses the same rails design as the Y axis.
+  
+  #+NAME: cad_base
+  #+CAPTION: CAD Model
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0648.jpg]]
+  
+* Carriage
+  The carriage is similar to the side plates with four bearings and a clamp for the drive belt to attach. The Z axis will be mounted to this carriage.
+  
+  #+NAME: x_carriage_backside
+  #+CAPTION: X Carriage (backside)
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0688.jpg]]
+  
+* Z-Axis
+  The Z axis was purchased as a unit made by an independent machinist in Canada for less than what it would have cost me for materials! Miracles are real!
+  TODO: Add link...
+  
+  #+NAME: z_axis
+  #+CAPTION: Z Axis
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0548.jpg]]
+  
+* Drive System
+  The drive system consists of stepper motors driving GT-2 timing belt around a drive pulley and an idler pulley. The motion components are clamped to the belt between. The drive pulleys were purchased but it was decided to make the idler pulleys as a test of my machinist meddle. Each idler consist of a pulley turned from aluminum, a press fit bearing, and a bushing.
+  
+  #+NAME: pulleys
+  #+CAPTION: Pulleys
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0698.jpg]]
+  
+* Conclusion
+  All motion components operate smoothly and the structure is rigid. The next phase will be attaching the electronics.
+  
+  #+NAME: full_mechanical
+  #+CAPTION: Full Mechanical Construction
+  #+ATTR_LATEX: :width 5cm :float t
+  #+attr_html: :width 500px
+  [[./phase1_images/KIMG0724.jpg]]
+  

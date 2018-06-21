@@ -67,7 +67,8 @@
               :pretty-print  false}}
             :app
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
-             :figwheel {:on-jsload "arclight.core/mount-root"}
+             :figwheel {:on-jsload "arclight.core/mount-root"
+                        :websocket-host "192.168.1.5"}
              :compiler
              {:main "arclight.dev"
               :asset-path "/js/out"
@@ -75,12 +76,7 @@
               :output-dir "target/cljsbuild/public/js/out"
               :source-map true
               :optimizations :none
-              :pretty-print  true}}
-
-
-
-            }
-   }
+              :pretty-print  true}}}}
 
 
   :figwheel
@@ -109,7 +105,7 @@
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.13"]
-                             [cider/cider-nrepl "0.14.0"]
+                             [cider/cider-nrepl "0.15.1"]
                              [org.clojure/tools.namespace "0.3.0-alpha2"
                               :exclusions [org.clojure/tools.reader]]
                              [refactor-nrepl "2.3.1"

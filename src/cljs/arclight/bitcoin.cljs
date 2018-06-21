@@ -7,8 +7,7 @@
             [secretary.core :as secretary :include-macros true]
             [accountant.core :as accountant]
             [arclight.ajax :refer [load-interceptors!]]
-            [ajax.core :refer [GET POST]]
-            [arclight.util :refer [lorem-ipsum]]))
+            [ajax.core :refer [GET POST]]))
 
 
 (defonce local-state (atom {:btc {:ths 13
@@ -148,7 +147,8 @@
               easy to program, I could actually utilize it, and it would be a
               bit more practical than a bitcoin calculator. Conclusion: it's
               getting pretty hard to make a profit mining Bitcoin nowadays
-              without some serious hashes/kw."]]
+              without some serious hashes/kw."]]]
+     [:div.alpha
       [:div.inline
        [:fieldset 
         [:legend "Bitcoin Mining Caclulator"]

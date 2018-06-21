@@ -1,5 +1,5 @@
 (ns arclight.register
-  (:require [arclight.util :refer [lorem-ipsum]]
+  (:require 
             [ajax.core :refer [GET POST]]))
 
 (defn handle-register [response]
@@ -35,6 +35,6 @@
    [:div.alpha
     [:fieldset
      [:legend "Info"]
-     [:p (take 2000 lorem-ipsum)]]]
+     [:p "testing"]]]
    [:div.alpha
     [register-form app-state]]])
