@@ -85,7 +85,8 @@
    :nrepl-port 7002
    :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"
                       "cider.nrepl/cider-middleware"
-                      "refactor-nrepl.middleware/wrap-refactor"]
+                      ;; "refactor-nrepl.middleware/wrap-refactor"
+                      ]
    :css-dirs ["resources/public/css"]
    :ring-handler arclight.handler/app}
 
@@ -105,11 +106,12 @@
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.13"]
-                             [cider/cider-nrepl "0.15.1"]
+                             [cider/cider-nrepl "0.17.0"]
                              [org.clojure/tools.namespace "0.3.0-alpha2"
                               :exclusions [org.clojure/tools.reader]]
-                             [refactor-nrepl "2.3.1"
-                              :exclusions [org.clojure/clojure]]]
+                             ;; [refactor-nrepl "2.4.0"
+                             ;;  :exclusions [org.clojure/clojure]]
+                             ]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]

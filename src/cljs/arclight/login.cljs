@@ -10,6 +10,14 @@
   (swap! app-state assoc :logged false)
   (prn response))
 
+(defn get-secured-button [app-state]
+  (if (get @app-state :logged)
+    [:button.wide {:on-click
+                   #(GET "/t2" {:params {:foo 3}
+                                :handler
+                                (fn [{x :rand}]
+                                  (swap! app-state assoc :counter x))})} "GET secured!"]))
+
 (defn login-form [app-state]
   (let [user (:user @app-state)
         pass (:pass @app-state)]
@@ -25,21 +33,22 @@
         [:td "Password: "]
         [:td [:input {:type "password" :value pass
                       :on-change #(swap! app-state assoc :pass (.. % -target -value))}]]]]]
-     [:button.wide {:on-click #(POST "/login" {:params {:user user :pass pass}
-                                               :handler (partial handle-login app-state)})} "Log in!"]
-     [:br] [:button.wide {:on-click #(GET "/logout" {:params {}
-                                                     :handler (partial handle-logout app-state)})} "Log out!"]
-     [:br] [:button.wide {:on-click
-                       #(GET "/t2" {:params {:foo 3}
-                                    :handler
-                                    (fn [{x :rand}]
-                                      (swap! app-state assoc :counter x))})} "GET secured!"]]))
+     [:button.wide
+      {:on-click #(POST "/login" {:params {:user user :pass pass}
+                                  :handler (partial handle-login app-state)})} "Log in!"]
+     [:br]
+     [:button.wide
+      {:on-click #(GET "/logout"
+                       {:params {}
+                        :handler (partial handle-logout app-state)})} "Log out!"]
+     [:br]
+     [get-secured-button app-state]]))
 
 (defn login-page [app-state]
   [:div
    [:div.alpha
     [:fieldset
      [:legend "Info"]
-     [:p (take 2000 util/lorem-ipsum)]]]
+     [:p "Login is currently fully implemented; however, because registration is not yet fully implemented this page is mostly useless."]]]
    [:div.alpha
     [login-form app-state]]])

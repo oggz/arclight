@@ -48,7 +48,7 @@
 ;;                        ["foo" "bar"]
 ;;                        ["baz" "bazel"]] {:multi? true})
 
-;; (db/delete! db :users ["uname = ?" "baz"])
+;; (db/delete! db :users ["uname = ?" "foobar"])
 
 (def nav-bar
   [:div#navbar])
@@ -101,12 +101,13 @@
   (let [user (get-in request [:params :user])
         pass (get-in request [:params :pass])
         hash (bh/derive pass)]
-    (if (nil? (try
-                (db/insert! db :users {:uname user :pword hash})
-                (catch Exception e
-                  (prn "ERROR: "(.getMessage e)))))
-      (status 401 (str "Error: " user " was NOT added to the database!"))
-      (status 200 (str user " was added to the database.")))))
+    ;; (if (nil? (try
+    ;;             (db/insert! db :users {:uname user :pword hash})
+    ;;             (catch Exception e
+    ;;               (prn "ERROR: "(.getMessage e)))))
+    ;;   (status 401 (str "Error: " user " was NOT added to the database!"))
+    ;;   (status 200 (str user " was added to the database.")))
+    (status 200 "Message: Registration is not yet fully implemented!")))
 
 (defn logout-user [req]
   (-> req

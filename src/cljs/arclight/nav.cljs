@@ -13,8 +13,7 @@
    [:a.nav {:href "/register"} "Register"]
    [:a.nav {:href "/login"} "Login"]
    (if (:logged @app-state)
-     [:a.nav {:href "/"} (str "Dashboard: " (:user @app-state))])
-   ])
+     [:a.nav {:href "/"} (str "Logged In: " (:user @app-state))])])
 
 (defn footer [app-state]
   [:div.footer
