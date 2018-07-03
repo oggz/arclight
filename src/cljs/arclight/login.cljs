@@ -38,9 +38,8 @@
                                   :handler (partial handle-login app-state)})} "Log in!"]
      [:br]
      [:button.wide
-      {:on-click #(GET "/logout"
-                       {:params {}
-                        :handler (partial handle-logout app-state)})} "Log out!"]
+      {:on-click #(GET "/logout" {:params {}
+                                  :handler (partial handle-logout app-state)})} "Log out!"]
      [:br]
      [get-secured-button app-state]]))
 
