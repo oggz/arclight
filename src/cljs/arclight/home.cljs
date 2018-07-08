@@ -1,5 +1,65 @@
-(ns arclight.home)
+(ns arclight.home
+  (:require-macros [cljs.core.async.macros :refer [go go-loop alt!]])
+  (:require [cljs.core.async :refer [chan <! >! timeout close! alts!]]
+            [reagent.core :as reagent :refer [atom]]))
+
+(def spinner #{[-1 0] [0 0] [1 0]})
+(def r-pentamino #{[-1 0] [-1 1] [0 -1] [0 0] [1 0]})
+
+(defonce state (reagent/atom {:width 500
+                              :height 500
+                              :size 10
+                              :cells r-pentamino
+                              :ctl (chan 0)}))
+
+
+(defn neighbors [[x y]]
+  (let [x ((juxt inc inc identity dec dec dec identity inc) x)
+        y ((juxt identity inc inc inc identity dec dec dec) y)]
+    (map vector x y)))
+
+(defn evolve [pop]
+  (set (for [[cell count] (frequencies (mapcat neighbors pop))
+             :when (or (= 3 count)
+                       (and (= 2 count)
+                            (pop cell)))]
+         cell)))
+
+(defonce go-evolve
+  (let [ctl (chan 0)]
+    (go-loop []
+      (alt! ctl ([v] (if (= v :kill)
+                       (prn "Stopped!")
+                       (do (<! ctl) (recur))))
+            (timeout 150) (do
+                            (swap! state update :cells evolve)
+                            ;; (update-grid!)
+                            (recur))))
+    ctl))
+;; (swap! state assoc :size 5)
+;; (count (:cells @state))
 
 (defn home-page [app-state]
-  [:div.alpha
-   [:h2 "Welcome to Arclight"]])
+  (let [s @state]
+    [:div
+     [:div.alpha
+      [:h2 "Welcome to Arclight Labs"]]
+     [:div.alpha
+      [:div
+      [:button {:on-click #(go (>! go-evolve :pause))} "Pause/Play"]
+      [:button {:on-click #(go (>! go-evolve :kill))} "Stop"]
+       [:button {:on-click #(swap! state assoc :cells r-pentamino)} "Reset"]]
+      [:svg {:width (:width s)
+             :height (:height s)
+             :viewBox "-250 -250 500 500"}
+       (for [[x y] (:cells s)]
+         ^{:key (str [x y])}
+         [:rect  {:width (- (:size s) 1)
+                  :height (- (:size s) 1)
+                  :fill "green"
+                  :x (* (:size s) x)
+                  :y (* (:size s) y)}])]
+      [:div
+       [:p (str "Cells: " (count (:cells s)))]]]
+     [:div.alpha
+      [:p "This is a realtime simulation of John Conway's Game of Life starting from the r-pentamino lifeform. The code follows:"]]]))

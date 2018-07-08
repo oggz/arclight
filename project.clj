@@ -24,6 +24,7 @@
                  [hiccup "1.0.5"]
                  [cljs-ajax "0.7.2"]
                  [cljsjs/highcharts "5.0.14-0"]
+                 [quil "2.7.1"]
                  [yogthos/config "0.9"]
                  [secretary "1.2.3"]
                  [venantius/accountant "0.2.0"
@@ -68,7 +69,7 @@
             :app
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
              :figwheel {:on-jsload "arclight.core/mount-root"
-                        :websocket-host "192.168.1.5"}
+                        :websocket-host :js-client-host}
              :compiler
              {:main "arclight.dev"
               :asset-path "/js/out"

@@ -139,9 +139,7 @@ img {
 }
 
 svg {
-    position: absolute;
-    top: 0;
-    pointer-events: none;
+
 }
 
 .centered {

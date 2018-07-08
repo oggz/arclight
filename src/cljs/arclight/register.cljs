@@ -4,18 +4,19 @@
 
 (def info "Registration is currently a work in progress. The database is in place and the mechanisms are mostly there; however, since this is a potential vector of attack it will be implemented in the live version only after thorough testing.")
 
-(defn handle-register [response]
-  (prn response)
-  (swap! arclight.core/app-state assoc :error (:msg response)))
+(defn handle-register [app-state]
+  (fn [response]
+    (prn response)
+    (swap! app-state assoc :error (:msg response))))
 
-(defn post-credentials [user pass email]
+(defn post-credentials [app-state user pass email]
   (POST "/register" {:params {:user user :pass pass :email email}
-                     :handler handle-register}))
-(defn show-error []
-  (if (not= "" (@arclight.core/app-state :error))
+                     :handler (handle-register app-state)}))
+(defn show-error [app-state]
+  (if (not= "" (:error @app-state))
        [:span
-        [:p (get @arclight.core/app-state :error)]
-        [:button {:on-click #(swap! arclight.core/app-state assoc :error "")} "Ok"]]))
+        [:p (:error @app-state)]
+        [:button {:on-click #(swap! app-state assoc :error "")} "Ok"]]))
 
 (defn register-form [app-state]
   (let [user (:user @app-state)
@@ -23,7 +24,7 @@
         email (:email @app-state)]
     [:fieldset
      [:legend "Register"]
-     [show-error]
+     [show-error app-state]
      [:table.centered
       [:tbody
        [:tr
@@ -40,7 +41,7 @@
                       :on-change #(swap! app-state assoc :pass (.. % -target -value))}]]]]]
      [:button.wide
       ;; {:on-click (post-credentials user pass email)}
-      {:on-click #(post-credentials user pass email)} "Register"]]))
+      {:on-click #(post-credentials app-state user pass email)} "Register"]]))
 
 (defn register-page [app-state]
   [:div
