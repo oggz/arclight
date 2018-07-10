@@ -58,10 +58,7 @@
 
 (def mount-target
   [:div#app
-      [:h3 "ClojureScript has not been compiled!"]
-      [:p "please run "
-       [:b "lein figwheel"]
-       " in order to start the compiler"]])
+      [:h3 "Loading..."]])
 
 (defn head []
   [:head
@@ -94,8 +91,8 @@
         (-> req
             (assoc :cookies {"access-token" (jwt/sign {:user (:userid umap)} "secret")})
             (assoc-in [:body] {:msg "Login successful!"}))
-        (status 401 (str user " is NOT authentic!")))
-      (status 401 (str "Error: " user " was not found in the database!")))))
+        (status 200 (str user " is NOT authentic!")))
+      (status 200 (str "Error: " user " was not found in the database!")))))
 
 (defn register-user [request]
   (let [user (get-in request [:params :user])

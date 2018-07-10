@@ -1,7 +1,8 @@
 (ns arclight.home
   (:require-macros [cljs.core.async.macros :refer [go go-loop alt!]])
   (:require [cljs.core.async :refer [chan <! >! timeout close! alts!]]
-            [reagent.core :as reagent :refer [atom]]))
+            [reagent.core :as reagent :refer [atom]]
+            [ajax.core :refer [GET POST]]))
 
 (def spinner #{[-1 0] [0 0] [1 0]})
 (def r-pentamino #{[-1 0] [-1 1] [0 -1] [0 0] [1 0]})
@@ -9,6 +10,7 @@
 (defonce state (reagent/atom {:width 500
                               :height 500
                               :size 10
+                              :speed 150
                               :cells r-pentamino
                               :ctl (chan 0)}))
 
@@ -31,7 +33,7 @@
       (alt! ctl ([v] (if (= v :kill)
                        (prn "Stopped!")
                        (do (<! ctl) (recur))))
-            (timeout 150) (do
+            (timeout (:speed @state)) (do
                             (swap! state update :cells evolve)
                             ;; (update-grid!)
                             (recur))))
@@ -43,12 +45,13 @@
   (let [s @state]
     [:div
      [:div.alpha
-      [:h2 "Welcome to Arclight Labs"]]
-     [:div.alpha
+      [:h2 "Welcome to Arclight Labs"]
       [:div
-      [:button {:on-click #(go (>! go-evolve :pause))} "Pause/Play"]
-      [:button {:on-click #(go (>! go-evolve :kill))} "Stop"]
-       [:button {:on-click #(swap! state assoc :cells r-pentamino)} "Reset"]]
+       [:button {:on-click #(go (>! go-evolve :pause))} "Pause/Play"]
+       [:button {:on-click #(go (>! go-evolve :kill))} "Stop"]
+       [:button {:on-click #(swap! state assoc :cells r-pentamino)} "Reset"]
+       [:button {:on-click #(swap! state update :size inc)} "+"]
+       [:button {:on-click #(swap! state update :size dec)} "-"]]
       [:svg {:width (:width s)
              :height (:height s)
              :viewBox "-250 -250 500 500"}
@@ -62,4 +65,4 @@
       [:div
        [:p (str "Cells: " (count (:cells s)))]]]
      [:div.alpha
-      [:p "This is a realtime simulation of John Conway's Game of Life starting from the r-pentamino lifeform. The code follows:"]]]))
+      [:p "This is an implementation of John Conway's Game of Life in Clojurescript. It begins from the r-pentamino lifeform which evolves into many other lifeforms such as spinners and gliders. Please check out the code on github if you are interested. The link for that is below and this code is in the home.cljs file."]]]))

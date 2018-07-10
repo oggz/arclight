@@ -18,4 +18,5 @@
 (defn footer [app-state]
   [:div.footer
    [:a.nav {:href "https://github.com/oggz/arclight"} "Github"]
-   [:a.nav {:href "https://linkedin.com/in/adoccolo"} "LinkedIn"]])
+   [:a.nav {:href "https://linkedin.com/in/adoccolo"} "LinkedIn"]
+   [:a.nav {:href "resume.pdf"} "Resume"]])

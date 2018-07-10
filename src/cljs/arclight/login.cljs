@@ -3,12 +3,14 @@
             [ajax.core :refer [GET POST]]))
 
 (defn handle-login [app-state response]
-  (swap! app-state assoc :logged true)
-  (prn response))
+  (if (:cookies response)
+    (swap! app-state assoc :logged true))
+  (prn (str response)))
 
 (defn handle-logout [app-state response]
+
   (swap! app-state assoc :logged false)
-  (prn response))
+  (prn (:cookies response)))
 
 (defn get-secured-button [app-state]
   (if (get @app-state :logged)
@@ -48,6 +50,6 @@
    [:div.alpha
     [:fieldset
      [:legend "Info"]
-     [:p "Login is currently fully implemented; however, because registration is not yet fully implemented this page is mostly useless."]]]
+     [:p "Login is currently fully implemented; however, because registration is not yet fully implemented, this page is useless."]]]
    [:div.alpha
     [login-form app-state]]])

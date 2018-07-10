@@ -2,11 +2,10 @@
   (:require [arclight.util :as util]
             [ajax.core :refer [GET POST]]))
 
-(def info "Registration is currently a work in progress. The database is in place and the mechanisms are mostly there; however, since this is a potential vector of attack it will be implemented in the live version only after thorough testing.")
+  (def info "Registration is currently a work in progress. The database is in place and the mechanisms are mostly there; however, since this is a potential vector of attack, it will be implemented in the live version only after thorough testing.")
 
 (defn handle-register [app-state]
   (fn [response]
-    (prn response)
     (swap! app-state assoc :error (:msg response))))
 
 (defn post-credentials [app-state user pass email]

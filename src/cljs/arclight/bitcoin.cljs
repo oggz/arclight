@@ -139,15 +139,18 @@
      [:div.alpha
       [:fieldset
        [:legend "Info"]
-       [:p.lim "This calculator is for estimation only. Bitcoins price
-              and mining difficulty fluctuate wildly. This is more of a
-              project to learn using clojurescript and reagent to develop a
-              reative calculator application. I will probably add a calculator
-              page for machining operations in the near future as this was
-              easy to program, I could actually utilize it, and it would be a
-              bit more practical than a bitcoin calculator. Conclusion: it's
-              getting pretty hard to make a profit mining Bitcoin nowadays
-              without some serious hashes/kw."]]]
+       [:p.lim "This calculator is for estimation only. Bitcoin's
+              price and mining difficulty fluctuate wildly. This was a
+              project to learn using clojurescript and reagent to
+              develop a reative calculator application. I will
+              probably add a calculator page for machining operations
+              in the near future as this was easy to program and I
+              could actually utilize it. It would be a bit more
+              practical than a bitcoin calculator. Conclusion: it's
+              getting pretty hard to make a profit mining Bitcoin
+              nowadays without some serious hashes/kw. However, I
+              believe Bitcoin and similar technologies will be the
+              future of our economy and banking infrastructure."]]]
      [:div.alpha
       [:div.inline
        [:fieldset 
