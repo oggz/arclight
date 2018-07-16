@@ -124,11 +124,21 @@ legend {
     line-height: 50px;
 }
 
+video {
+    width: 720;
+    height: 480;
+}
+
 @media (max-width: 500px) {
     .nav {
         margin: 0;
         padding-left: 10px;
         line-height: 50px;
+    }
+
+    video {
+        width: 480;
+        height: 240;
     }
 }
 
@@ -138,8 +148,8 @@ img {
     pointer-events: none;
 }
 
-svg {
-
+.life {
+    margin: 20px;
 }
 
 .centered {
