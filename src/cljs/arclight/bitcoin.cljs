@@ -143,14 +143,15 @@
               price and mining difficulty fluctuate wildly. This was a
               project to learn using clojurescript and reagent to
               develop a reative calculator application. I will
-              probably add a calculator page for machining operations
-              in the near future as this was easy to program and I
-              could actually utilize it. It would be a bit more
-              practical than a bitcoin calculator. Conclusion: it's
-              getting pretty hard to make a profit mining Bitcoin
-              nowadays without some serious hashes/kw. However, I
-              believe Bitcoin and similar technologies will be the
-              future of our economy and banking infrastructure."]]]
+              probably add a calculator page for EE calculations and
+              machining operations in the near future as this was easy
+              to program and I could better utilize it. It would be
+              a bit more practical than a bitcoin
+              calculator. Conclusion: it's getting pretty hard to make
+              a profit mining Bitcoin nowadays without some serious
+              hashes/kw. However, I believe Bitcoin and similar
+              technologies will be the future of our economy and
+              banking infrastructure... eventually!"]]]
      [:div.alpha
       [:div.inline
        [:fieldset 
@@ -158,56 +159,55 @@
         [:table.centered
          [:tbody
           [:tr
-           [:td {:colSpan 2} "Bitcoin Value (USD): "]
+           [:td "Bitcoin Value (USD): "]
            [:td [:input {:type "number" :value value
                          :on-change #(swap! local-state assoc-in [:btc :value] (.. % -target -value))}]]]
           [:tr
-           [:td {:colSpan 2} "Hashrate/Miner (Th/s): "]
+           [:td "Hashrate/Miner (Th/s): "]
            [:td [:input {:type "number" :value ths
                          :on-change #(swap! local-state assoc-in [:btc :ths] (.. % -target -value))}]]]
           [:tr
-           [:td {:colSpan 2} "Miners: "]
+           [:td "Miners: "]
            [:td [:input {:type "number" :value units
                          :on-change #(swap! local-state assoc-in [:btc :units] (.. % -target -value))}]]]
           [:tr
-           [:td {:colSpan 2} "Watts/Miner: "]
+           [:td "Watts/Miner: "]
            [:td [:input {:type "number" :value wpm
                          :on-change #(swap! local-state assoc-in [:btc :wpm] (.. % -target -value))}]]]
           [:tr
-           [:td {:colSpan 2} "Energy Cost ($/kwh): "]
+           [:td "Energy Cost ($/kwh): "]
            [:td [:input {:type "number" :value cost
                          :on-change #(swap! local-state assoc-in [:btc :cost] (.. % -target -value))}]]]
           [:tr
-           [:td {:colSpan 2} "Start Delay (Months): "]
+           [:td "Start Delay (Months): "]
            [:td [:input {:type "number" :value delay
                          :on-change #(swap! local-state assoc-in [:btc :delay] (.. % -target -value))}]]]
           [:tr
-           [:td {:colSpan 2} "Difficulty: "]
+           [:td "Difficulty: "]
            [:td [:input {:type "number" :value diff
                          :on-change #(swap! local-state assoc-in [:btc :difficulty] (.. % -target -value))}]]]
           [:tr
-           [:td {:colSpan 2} "Amps: "]
+           [:td "Amps: "]
            [:td [:input {:type "number" :value (format "%.0f" energy)
                          :on-change #(swap! local-state assoc-in [:btc :energy] (.. % -target -value))}]]]
           [:tr
-           [:td {:colSpan 2} "Watts: "]
-           (if false
-             [:td [:input {:type "number" :value watts
-                           :on-change #(swap! local-state assoc-in [:btc :watts] (.. % -target -value))}]]
-             [:td [:input {:type "text" :read-only true :value (ins-comma watts)}]])]
-          [:tr [:td [:p "Profit corrected for difficulty increase: "]]]
+           [:td "Watts: "]
+           [:td [:input {:type "text" :read-only true :value (ins-comma watts)}]]]
+          [:tr
+           [:td [:span "Profit corrected for mining difficulty: "]]]
           (for [n ['(1 "Dollars/Day: ")
                    '(7 "Dollars/Week: ")
                    '(30 "Dollars/Month: ")
-                   '(365 "Dollars/Year: ")]]
-            ^{:key n}
+                   '(365 "Dollars/Year: ")]] ^{:key n}
             [:tr
              [:td (second n)]
              [:td [:input {:type "defaultValue"
                            :read-only true :value (currency-format (profit tths diff value watts (first n) cost delay))}]]
-             [:td [:input {:type "defaultValue"
-                           :read-only true :value (currency-format (calculate-energy-cost watts (first n) cost))}]]])
-          [:tr [:td [:p "Profit without correction: "]]]
+             ;; [:td [:input {:type "defaultValue"
+             ;;               :read-only true :value (currency-format (calculate-energy-cost watts (first n) cost))}]]
+             ])
+          [:tr
+           [:td [:p "Profit without correction: "]]]
           (for [n ['(1 "Dollars/Day: ")
                    '(7 "Dollars/Week: ")
                    '(30 "Dollars/Month: ")
