@@ -147,8 +147,8 @@
                (read-string (slurp (str "resources/public/" file)))
                (slurp (str "resources/public/" file)))
         list (filter (partial not= "default")
-                     (into [] (map :name (db/query db ["select name from projects"]))))]
-    (-> req
+                     (into [] (map :name (db/query db ["select name from projects order by id"]))))]
+    (-> {}
         (assoc-in [:body :type] filetype)
         (assoc-in [:body :list] list)
         (assoc-in [:body :data] data))))
