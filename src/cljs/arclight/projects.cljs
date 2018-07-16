@@ -4,45 +4,48 @@
             [cljs.core.async :refer [chan <! >! timeout]]
             [ajax.core :refer [GET POST]]))
 
-(defonce project-state (reagent/atom {:contents ""}))
-
-(defn get-iframe-height [id]
-  (-> js/document (.getElementById id) (.-contentDocument) (.-body) (.-clientHeight)))
-;(-> js/document (.getElementById "pframe") (.-contentDocument) (.-body) (.-clientHeight))
-
-(defn set-iframe-height! [id val]
-  (-> js/document (.getElementById id) (.-style) (.-height)
-      (set! (str val "px"))))
-
-(defn set-iframe-to-content-height [name]
-  (set-iframe-height! name (get-iframe-height name)))
+(defonce project-state (reagent/atom {:name "default"
+                                      :list []
+                                      :contents ""}))
+;; @project-state
 
 (defn comments []
   [:div.alpha
-   [:h1 "Comments..."]])
+   [:h3 "Comments..."]
+   [:p "Not implemented yet."]])
 
-(defn render-project [app-state]
+(defn get-project-data! [project]
+  (GET "/project-data" {:params {:file project}
+                        :handler #(let [list (:list %)
+                                        data (:data %)
+                                        filetype (:type %)]
+                                    (swap! project-state assoc
+                                           :name project
+                                           :type filetype
+                                           :contents data
+                                           :list list))}))
+
+(defn render-project []
   [:div {:style {:margin 10}}
    [:div.alpha {:id "project"}
-    (if (re-matches #".*cljs" (get @app-state :project))
+    (if (= (:type @project-state) :cljs)
       (get @project-state :contents)
       [:div {:dangerouslySetInnerHTML {:__html (get @project-state :contents)}}])]])
 
-(defn get-project-data [project]
-  (GET "/project-data" {:params {:file project}
-                        :handler #(swap! project-state assoc :contents %)}))
-(get-project-data "default.cljs")
-
 (defn project-page [app-state]
-  [:div
-   [:div.alpha
-    [:select {:style {:width 250}
-              :defaultValue "default"
-              :on-change (fn update-page-contents [this]
-                           (swap! app-state assoc :project (.. this -target -value))
-                           (get-project-data (.. this -target -value)))}
-     [:option {:value "default.cljs"} "Choose a project..."]
-     [:option "phase1.html"]
-     [:option "math_test.html"]
-     [:option "lm386.cljs"]]]
-   [render-project app-state]])
+  (reagent/create-class
+   {:reagent-render
+    (fn [] [:div
+            [:div.alpha
+             [:select {:style {:width 250}
+                       :defaultValue "default"
+                       :on-change #(get-project-data! (.. % -target -value))}
+              [:option {:value "default"} "Choose a project..."]
+              (for [project (:list @project-state)]
+                ^{:key project}
+                [:option project])]]
+            [render-project]
+            [comments]])
+
+    :component-will-mount
+    #(get-project-data! (:name @project-state))}))

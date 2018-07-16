@@ -30,9 +30,14 @@
 ;; (def users (db/create-table-ddl :users [[:userid :serial "PRIMARY KEY"]
 ;;                                         [:uname "VARCHAR(32)"]
 ;;                                         [:pword "VARCHAR(256)"]]))
+;; (def projects (db/create-table-ddl :projects [[:id :serial "PRIMARY KEY"]
+;;                                               [:name "VARCHAR(256)"]
+;;                                               [:filename "VARCHAR(256)"]]))
 ;; (db/execute! db (db/drop-table-ddl :users))
+;; (db/execute! db (db/drop-table-ddl :projects))
 
 ;; (db/execute! db [users])
+;; (db/execute! db [projects])
 
 ;; (try
 ;;   (db/insert! db :users {:userid 10
@@ -43,11 +48,20 @@
 
 
 ;; (db/query db ["select * from users"])
+;; (db/query db ["select * from projects"])
 ;; (db/query db ["select * from users where uname = ?" "foobar"])
 ;; (db/db-do-prepared db ["insert into users (uname, pword) values (?, ?)"
 ;;                        ["foo" "bar"]
 ;;                        ["baz" "bazel"]] {:multi? true})
-
+;; (db/db-do-prepared db ["insert into projects (name, filename) values (?, ?)"
+;;                        ["default" "default.cljs"]
+;;                        ["phase1" "phase1.html"]
+;;                        ["math test file" "math_test.html"]
+;;                        ["lm386" "lm386.cljs"]] {:multi? true})
+;; (db/update! db :projects {:name "LM386 Audio Amplifier"} ["name = ?" "lm386"])
+;; (db/update! db :projects {:name "3-Axis CNC - Phase 1"} ["name = ?" "CNC Build - Mechanical"])
+;; (db/delete! db :projects ["name = ?" "math test file"])
+;; (db/insert! db :projects {:name "Math Example" :filename "math_test.html"})
 ;; (db/delete! db :users ["uname = ?" "foobar"])
 
 (def nav-bar
@@ -126,10 +140,18 @@
         (status 401 "Unauthorized!")))))
 
 (defn send-project-data [req]
-  (let [file (get-in req [:params :file])]
-    (if (re-matches #".*cljs" file)
-      (assoc req :body (read-string (slurp (str "resources/public/" file))))
-      (assoc req :body (slurp (str "resources/public/" file))))))
+  (let [project (get-in req [:params :file])
+        file (apply :filename (db/query db ["select filename from projects where name = ?" project]))
+        filetype (if (re-matches #".*cljs" file) :cljs :html)
+        data (if (= filetype :cljs)
+               (read-string (slurp (str "resources/public/" file)))
+               (slurp (str "resources/public/" file)))
+        list (filter (partial not= "default")
+                     (into [] (map :name (db/query db ["select name from projects"]))))]
+    (-> req
+        (assoc-in [:body :type] filetype)
+        (assoc-in [:body :list] list)
+        (assoc-in [:body :data] data))))
 
 (defroutes routes
   (GET "/" [] (loading-page))
