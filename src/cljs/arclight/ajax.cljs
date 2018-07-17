@@ -14,7 +14,7 @@
         (assoc :format (ajax/json-request-format)
                :keywords? true
                :response-format (ajax/json-response-format {:keywords? true})
-               :error-handler #(log "ERROR: AJAX Handler: " %))
+               :error-handler #(prn "ERROR: AJAX Handler: " (str %)))
         (update :headers #(merge {"x-csrf-token"
                                   (.-value
                                    (.getElementById js/document
@@ -24,6 +24,7 @@
 
 ;; @ajax/default-interceptors
 ;; (reset! ajax/default-interceptors [])
+;; (load-interceptors!)
 (defn load-interceptors! []
   (swap! ajax/default-interceptors
          conj
