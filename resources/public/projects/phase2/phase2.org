@@ -1,0 +1,30 @@
+#+TITLE: 3-Axis CNC - Phase 2
+#+AUTHOR: Alexander A. Doccolo
+#+STARTUP: content
+#+OPTIONS: toc:nil H:3 num:0
+#+OPTIONS: tex:dvipng
+#+OPTIONS: html-postamble:nil
+#+PROPERTY: EXPORT_FILE_NAME foo
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [12pt, letterpaper]
+#+LATEX_HEADER: \usepackage[top=0.5in,bottom=1in]{geometry}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{setspace}
+#+LATEX_HEADER: \usepackage{adjmulticol}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{bicaption}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+HTML_HEAD_EXTRA: <style> pre.src {overflow:auto;} </style>
+#+HTML_HEAD_EXTRA: <style> body {color:white;} </style>
+#+HTML_HEAD_EXTRA: <style> img {max-width:80%; border-radius:5px;} </style>
+
+
+* Abstract
+
+  Phase 2 of the project consists of getting all of the electronics hooked up and programmed. This part of the project is completed to the point of successful operation; however, it requires some wire management and a few other things in order to be considered totally complete. Phase 3 will contain all of the little things required to finish the machine properly. This is the current state of completion.
+
+  #+NAME: controls
+  #+CAPTION: Control System Overview
+  #+ATTR_LATEX: :width 3cm :float t
+  #+ATTR_HTML: :width 500px
+  [[./projects/phase2/overview.jpg]]
