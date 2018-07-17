@@ -54,14 +54,16 @@
 ;;                        ["foo" "bar"]
 ;;                        ["baz" "bazel"]] {:multi? true})
 ;; (db/db-do-prepared db ["insert into projects (name, filename) values (?, ?)"
-;;                        ["default" "default.cljs"]
-;;                        ["phase1" "phase1.html"]
-;;                        ["math test file" "math_test.html"]
-;;                        ["lm386" "lm386.cljs"]] {:multi? true})
+;;                        ["default" "default/default.cljs"]
+;;                        ["3-Axis CNC - Phase 1" "/phase1/phase1.html"]
+;;                        ["3-Axis CNC - Phase 2" "/phase2/phase2.html"]
+;;                        ["LM386 Audio Amplifier" "/lm386/lm386.cljs"]]
+;;                    {:multi? true})
 ;; (db/update! db :projects {:name "LM386 Audio Amplifier"} ["name = ?" "lm386"])
 ;; (db/update! db :projects {:name "3-Axis CNC - Phase 1"} ["name = ?" "CNC Build - Mechanical"])
-;; (db/delete! db :projects ["name = ?" "math test file"])
+;; (db/delete! db :projects ["name = ?" "Test Math Render"])
 ;; (db/insert! db :projects {:name "Math Example" :filename "math_test.html"})
+;; (db/insert! db :projects {:name "3-Axis CNC - Phase 2" :filename "phase2/phase2.html"})
 ;; (db/delete! db :users ["uname = ?" "foobar"])
 
 (def nav-bar
@@ -144,8 +146,8 @@
         file (apply :filename (db/query db ["select filename from projects where name = ?" project]))
         filetype (if (re-matches #".*cljs" file) :cljs :html)
         data (if (= filetype :cljs)
-               (read-string (slurp (str "resources/public/" file)))
-               (slurp (str "resources/public/" file)))
+               (read-string (slurp (str "resources/public/projects/" file)))
+               (slurp (str "resources/public/projects/" file)))
         list (filter (partial not= "default")
                      (into [] (map :name (db/query db ["select name from projects order by id"]))))]
     (-> {}
