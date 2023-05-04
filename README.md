@@ -1,5 +1,6 @@
 # Arclight
 ### A Reactive web app and RESTful web service written completely in **_Clojure_**!
+![screenshot-2023-05-04_10:21:27](https://user-images.githubusercontent.com/9381245/236236416-d5e89d4f-e2c0-4dbc-b233-a1ddbb795c64.png)
 
 Ring based server. It has the best abstraction I've seen for HTTP. It structures requests and responses as maps of data to pass through layered functions. Once it reaches the core function it is routed by uri and request type, processed by server code, then returns through the functions on the way out in reverse order. This allows for adding middleware anywhere in the process which is essentially a single function. The input and output of this function pipe is handled by rind adapters which translate the map to whatever format the desired server requires. This is a perfect serperation of concerns. If the current server doesn't handle new requirement it can be modularly replaced.
 
